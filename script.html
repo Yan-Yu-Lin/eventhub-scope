@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>講稿 · 專案範疇管理 EventHub</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Noto+Sans+TC:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{--accent:#002FA7;--ink:#0a0a0a;--paper:#fafaf8;--grey:#f0f0ee;--border:#e0e0e0;--text-2:#525252;--text-3:#737373}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{font-size:15px}
+  body{font-family:'Inter','Noto Sans TC',sans-serif;color:var(--ink);background:var(--paper);line-height:1.7;padding:3rem 2rem;max-width:780px;margin:0 auto}
+  h1{font-weight:300;font-size:2.2rem;letter-spacing:-.03em;margin-bottom:.4rem}
+  .subtitle{font-size:.9rem;color:var(--text-3);font-family:'JetBrains Mono',monospace;letter-spacing:.1em;text-transform:uppercase;margin-bottom:3rem}
+  .page{margin-bottom:2.8rem;page-break-inside:avoid}
+  .page-header{display:flex;align-items:baseline;gap:1rem;margin-bottom:.8rem;border-bottom:2px solid var(--ink);padding-bottom:.6rem}
+  .page-num{font-family:'JetBrains Mono',monospace;font-size:.75rem;letter-spacing:.15em;color:var(--accent);font-weight:600;white-space:nowrap}
+  .page-title{font-weight:500;font-size:1.1rem;letter-spacing:-.01em}
+  .note{font-size:.92rem;color:var(--ink);line-height:1.75;font-weight:300}
+  .note strong{font-weight:500;color:var(--accent)}
+  .note em{font-style:normal;background:rgba(0,47,167,.08);padding:0 .2em}
+  .tip{margin-top:.8rem;padding:.7rem 1rem;background:var(--grey);font-size:.82rem;color:var(--text-2);line-height:1.6}
+  .tip::before{content:'💡 ';font-size:.9rem}
+  .divider{width:100%;height:1px;background:var(--border);margin:1.6rem 0}
+  .time{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--text-3);letter-spacing:.08em}
+  @media print{body{padding:1.5cm 2cm;font-size:13px}.page{page-break-inside:avoid}}
+</style>
+</head>
+<body>
+
+<h1>講稿</h1>
+<div class="subtitle">專案範疇管理 · EventHub 活動管理平台 · A 組</div>
+
+<div class="page">
+  <div class="page-header">
+    <span class="page-num">P01 · 封面</span>
+    <span class="page-title">開場</span>
+    <span class="time">~30s</span>
+  </div>
+  <div class="note">
+    大家好，我們是 A 組。今天要跟大家分享的是<strong>專案範疇管理</strong>的完整範例。我們用一個虛擬的專案——<em>EventHub 活動管理平台</em>——來走過 PMBOK 裡面五大範疇管理的流程，讓大家看看每個流程實際操作起來是什麼樣子。
+  </div>
+</div>
+
+<div class="page">
+  <div class="page-header">
+    <span class="page-num">P02 · 專案概述</span>
+    <span class="page-title">為什麼需要 EventHub？</span>
+    <span class="time">~1min</span>
+  </div>
+  <div class="note">
+    先講背景。現在北科的社團辦活動，大家都知道，基本上就是開一張 Google 表單、丟到 LINE 群組。問題是什麼？<strong>資訊分散</strong>——你要找哪個活動在哪個群組裡面翻半天；<strong>簽到靠手動</strong>——紙本簽到、人工對名單；<strong>沒有數據</strong>——辦完活動不知道成效怎樣。<br/><br/>
+    所以我們假設要做一個 <em>EventHub</em>，讓社團可以線上建活動、學生一鍵報名、QR Code 簽到、事後問卷回饋，一站搞定。目標是 <strong>18 週</strong>、<strong>6 個人</strong>、<strong>零預算</strong>，一學期內上線。
+  </div>
+</div>
+
+<div class="page">
+  <div class="page-header">
+    <span class="page-num">P03 · 幕封</span>
+    <span class="page-title">流程一：蒐集需求</span>
+    <span class="time">~10s</span>
+  </div>
+  <div class="note">
+    好，進入第一個流程——<strong>蒐集需求</strong>。這個流程的重點是：搞清楚<em>誰需要什麼</em>。
+  </div>
+</div>
+
+<div class="page">
+  <div class="page-header">
+    <span class="page-num">P04 · 利害關係人</span>
+    <span class="page-title">四類利害關係人</span>
+    <span class="time">~1min</span>
+  </div>
+  <div class="note">
+    我們先識別利害關係人，分成四類。<strong>社團幹部</strong>是主辦方，他們需要建活動、管報名、出簽到碼。<strong>一般學生</strong>是參加者，他們要能瀏覽、報名、收通知。<strong>課外活動組</strong>是管理方，他們要能審核活動、看數據、出報表。最後是<strong>系統管理員</strong>，負責帳號和系統維運。<br/><br/>
+    蒐集方法我們用了問卷 300 份、焦點訪談 5 場、還做了 ACCUPASS 和 Meetup 的競品分析。
+  </div>
+</div>
+
+<div class="page">
+  <div class="page-header">
+    <span class="page-num">P05 · 需求文件</span>
+    <span class="page-title">8 項核心需求</span>
+    <span class="time">~1min</span>
+  </div>
+  <div class="note">
+    整理出來的需求我們編號 R001 到 R008，每個都標了優先級。<strong>必要的</strong>有：活動建立、線上報名、QR Code 簽到、活動審核——這些沒做就等於沒有這個系統。<strong>重要的</strong>有：推播通知、問卷回饋、數據儀表板——少了會不好用但不致命。<strong>次要的</strong>像多語系支援，可以放到後面的版本。<br/><br/>
+    這就是需求追溯矩陣的概念——每個需求都要追得到是<em>誰提的、優先級是什麼</em>。
+  </div>
+</div>
+
+<div class="page">
+  <div class="page-header">
+    <span class="page-num">P06 · 幕封</span>
+    <span class="page-title">流程二：定義範疇</span>
+    <span class="time">~10s</span>
+  </div>
+  <div class="note">
+    第二個流程——<strong>定義範疇</strong>。蒐集完需求之後，要決定：<em>做什麼、不做什麼</em>。
+  </div>
+</div>
+
+<div class="page">
+  <div class="page-header">
+    <span class="page-num">P07 · 範疇說明</span>
+    <span class="page-title">做什麼 vs 不做什麼</span>
+    <span class="time">~1.5min</span>
+  </div>
+  <div class="note">
+    這頁是專案範疇說明書的核心。左邊是<strong>範疇內</strong>——我們要交付 7 項東西：需求文件、設計文件、React 前端、Node.js 後端、測試報告、使用手冊、還有部署上線。<br/><br/>
+    右邊同樣重要——<strong>排除項</strong>。我們明確列出不做的東西：<em>不做金流</em>，活動收費走學校既有系統；<em>不做即時聊天</em>；<em>不做原生 App</em>，用 PWA 替代。<br/><br/>
+    為什麼排除項這麼重要？因為它就是你防止<strong>範疇蔓延</strong>的第一道防線。有人說「欸加個聊天功能好不好？」你就可以指著這份文件說：當初已經明確排除了。
+  </div>
+  <div class="tip">重點強調：排除項比包含項更重要，這是範疇管理的關鍵觀念。</div>
+</div>
+
+<div class="page">
+  <div class="page-header">
+    <span class="page-num">P08 · 幕封</span>
+    <span class="page-title">流程三：建立 WBS</span>
+    <span class="time">~10s</span>
+  </div>
+  <div class="note">
+    第三個流程——<strong>建立 WBS</strong>，Work Breakdown Structure，工作分解結構。簡單說就是把大專案拆成小塊。
+  </div>
+</div>
+
+<div class="page">
+  <div class="page-header">
+    <span class="page-num">P09 · WBS 結構</span>
+    <span class="page-title">五大工作區</span>
+    <span class="time">~1min</span>
+  </div>
+  <div class="note">
+    我們把 EventHub 拆成<strong>五大工作區</strong>：專案管理、需求與設計、開發、測試、部署與交付。右邊這個樹狀圖就是 WBS 的視覺化——從最上面的專案名稱，一路往下拆。<br/><br/>
+    底下我們標了每個工作區的工作包數量。可以看到<strong>開發佔了 10 包</strong>，是最重的一塊，這也符合直覺。旁邊列了兩個 WBS 字典的範例——活動瀏覽頁 40 小時、簽到系統 API 32 小時。
+  </div>
+</div>
+
+<div class="page">
+  <div class="page-header">
+    <span class="page-num">P10 · WBS 完整工作包</span>
+    <span class="page-title">23 個工作包全覽</span>
+    <span class="time">~1.5min</span>
+  </div>
+  <div class="note">
+    這頁把<strong>全部 23 個工作包</strong>攤開來看。五個工作區各自有哪些包、預估多少工時，一目了然。<br/><br/>
+    <strong>專案管理</strong> 3 包 54 小時——專案計畫、進度追蹤、風險管理。<strong>需求與設計</strong> 3 包 80 小時——需求分析、UI/UX 設計、系統架構。<br/><br/>
+    中間藍色的是<strong>開發</strong>，最大塊——10 個包、320 小時。前端 4 包（活動瀏覽、報名、簽到、後台）、後端 5 包（認證、CRUD、報名、簽到、問卷 API）、加上資料庫建置。<br/><br/>
+    <strong>測試</strong> 3 包 96 小時——單元、整合、UAT。<strong>部署與交付</strong> 3 包 72 小時。<br/><br/>
+    WBS 的重點是：<em>拆到每個工作包都是一個人可以負責、可以估時間、可以追進度的最小單位</em>。
+  </div>
+  <div class="tip">這頁資訊量大，可以稍微停一下讓大家看。不用每個都唸，重點講開發區那 10 包。</div>
+</div>
+
+<div class="page">
+  <div class="page-header">
+    <span class="page-num">P11 · 幕封</span>
+    <span class="page-title">流程四：驗證範疇</span>
+    <span class="time">~10s</span>
+  </div>
+  <div class="note">
+    第四個流程——<strong>驗證範疇</strong>。東西做完了，要確認<em>做對了沒有</em>。
+  </div>
+</div>
+
+<div class="page">
+  <div class="page-header">
+    <span class="page-num">P12 · 驗收清單</span>
+    <span class="page-title">三步驗證流程 + 驗收結果</span>
+    <span class="time">~1.5min</span>
+  </div>
+  <div class="note">
+    驗證範疇有三個步驟。第一步，可交付成果完成後，<strong>專案經理安排審查會議</strong>。第二步，利害關係人<strong>依驗收標準逐項確認</strong>。第三步，通過就<strong>簽署驗收單</strong>，不通過就<strong>提出變更請求</strong>。<br/><br/>
+    底下是我們四個主要功能的驗收結果。活動建立——<strong>通過</strong>。報名系統——<strong>通過</strong>。QR Code 簽到——<em>條件通過</em>，功能 OK 但效能需要優化。數據儀表板——<strong>通過</strong>。<br/><br/>
+    注意那個「條件通過」——它不是失敗，而是說功能做到了但有需要改善的地方，這就可能產生一個變更請求，進入下一個流程。
+  </div>
+</div>
+
+<div class="page">
+  <div class="page-header">
+    <span class="page-num">P13 · 幕封</span>
+    <span class="page-title">流程五：控制範疇</span>
+    <span class="time">~10s</span>
+  </div>
+  <div class="note">
+    最後一個流程——<strong>控制範疇</strong>。專案在做的過程中，一定會有人想加東西、改東西。控制範疇就是在管這件事。
+  </div>
+</div>
+
+<div class="page">
+  <div class="page-header">
+    <span class="page-num">P14 · 變更請求</span>
+    <span class="page-title">三個變更請求案例</span>
+    <span class="time">~2min</span>
+  </div>
+  <div class="note">
+    我們舉三個變更請求的案例來說明。<br/><br/>
+    <strong>CR-001</strong>：社團幹部希望加「活動模板」功能。影響分析：要多 2 週開發、新增 3 個 API、2 個頁面。CCB 的決議——<em>延後到 v2.0</em>，不影響當前範疇。這是典型的「好主意但現在不做」。<br/><br/>
+    <strong>CR-002</strong>：課外活動組想把簽到改成 NFC 感應。影響分析：需要買讀卡機硬體，超出零預算的限制。決議——<em>拒絕</em>，維持 QR Code。這是典型的「超出限制條件」。<br/><br/>
+    <strong>CR-003</strong>：學生問卷反饋說想要活動分類標籤。影響分析：只要 8 小時、沒有額外風險。決議——<em>核准</em>，納入當前範疇。這是典型的「小改動、低風險、高價值」。<br/><br/>
+    三個案例分別代表三種處理方式：<em>延後、拒絕、核准</em>。這就是變更控制委員會 CCB 的工作。
+  </div>
+  <div class="tip">這頁是重點中的重點。三個案例講完觀眾就會理解控制範疇到底在控制什麼。</div>
+</div>
+
+<div class="page">
+  <div class="page-header">
+    <span class="page-num">P15 · 總結數據</span>
+    <span class="page-title">5 → 7 → 23 → 1</span>
+    <span class="time">~30s</span>
+  </div>
+  <div class="note">
+    最後用四個數字收束。<strong>5</strong> 大流程、<strong>7</strong> 項可交付成果、<strong>23</strong> 個工作包——最終匯聚成 <strong>1</strong> 個成功的專案。範疇管理就是從大到小拆解，再從小到大驗收的過程。
+  </div>
+</div>
+
+<div class="page">
+  <div class="page-header">
+    <span class="page-num">P16 · 結尾</span>
+    <span class="page-title">四個心得 + Q&A</span>
+    <span class="time">~30s</span>
+  </div>
+  <div class="note">
+    最後四個 takeaway。第一，<strong>蒐集需求要廣</strong>——不要漏掉任何利害關係人。第二，<strong>定義範疇要精</strong>——排除項比包含項重要。第三，<strong>WBS 是核心工具</strong>——拆到可管理才能追蹤。第四，也是最重要的——<strong>範疇蔓延是專案失敗的頭號殺手</strong>。驗證確保做對了，控制確保不多做。<br/><br/>
+    以上就是我們的報告，謝謝大家。有什麼問題嗎？
+  </div>
+</div>
+
+<div class="divider"></div>
+<div style="display:flex;justify-content:space-between;align-items:baseline">
+  <div class="time">總時長預估：約 12-15 分鐘</div>
+  <div class="time">A 組 · 國立臺北科技大學 · 2026.05.22</div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EventHub 活動管理平台 — 專案範疇管理報告</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --blue-50: #eff6ff;
+  --blue-100: #dbeafe;
+  --blue-200: #bfdbfe;
+  --blue-500: #3b82f6;
+  --blue-600: #2563eb;
+  --blue-700: #1d4ed8;
+  --blue-800: #1e40af;
+  --blue-900: #1e3a5f;
+  --gray-50: #f9fafb;
+  --gray-100: #f3f4f6;
+  --gray-200: #e5e7eb;
+  --gray-300: #d1d5db;
+  --gray-500: #6b7280;
+  --gray-600: #4b5563;
+  --gray-700: #374151;
+  --gray-800: #1f2937;
+  --gray-900: #111827;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', 'Noto Sans TC', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 10.5pt;
+  line-height: 1.8;
+  color: var(--gray-800);
+  background: #fff;
+  padding: 0;
+}
+
+@media print {
+  body { padding: 0; }
+  .page-break { page-break-before: always; }
+  .no-print { display: none; }
+}
+
+.container {
+  max-width: 210mm;
+  margin: 0 auto;
+  padding: 20mm 25mm;
+}
+
+/* Cover page */
+.cover {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  text-align: center;
+  padding: 60px 40px;
+  border-bottom: 1px solid var(--gray-200);
+}
+
+.cover-school {
+  font-size: 14pt;
+  font-weight: 500;
+  color: var(--gray-600);
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+}
+
+.cover-course {
+  font-size: 12pt;
+  color: var(--gray-500);
+  margin-bottom: 60px;
+}
+
+.cover-title {
+  font-size: 28pt;
+  font-weight: 700;
+  color: var(--blue-800);
+  margin-bottom: 12px;
+  letter-spacing: -0.5px;
+}
+
+.cover-subtitle {
+  font-size: 16pt;
+  font-weight: 400;
+  color: var(--gray-600);
+  margin-bottom: 80px;
+}
+
+.cover-meta {
+  font-size: 11pt;
+  color: var(--gray-600);
+  line-height: 2.2;
+}
+
+.cover-meta strong {
+  color: var(--gray-800);
+}
+
+.cover-line {
+  width: 60px;
+  height: 3px;
+  background: var(--blue-600);
+  margin: 40px auto;
+  border-radius: 2px;
+}
+
+/* Table of Contents */
+.toc {
+  padding: 40px 0;
+  border-bottom: 1px solid var(--gray-200);
+}
+
+.toc h2 {
+  font-size: 16pt;
+  font-weight: 700;
+  color: var(--gray-900);
+  margin-bottom: 24px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid var(--blue-600);
+  display: inline-block;
+}
+
+.toc-list {
+  list-style: none;
+  padding: 0;
+}
+
+.toc-list li {
+  padding: 8px 0;
+  border-bottom: 1px dotted var(--gray-300);
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.toc-list li a {
+  text-decoration: none;
+  color: var(--gray-800);
+  font-weight: 500;
+  font-size: 11pt;
+}
+
+.toc-list li a:hover {
+  color: var(--blue-600);
+}
+
+.toc-list .toc-num {
+  color: var(--blue-600);
+  font-weight: 600;
+  margin-right: 12px;
+  min-width: 24px;
+  display: inline-block;
+}
+
+.toc-list .toc-page {
+  color: var(--gray-500);
+  font-size: 10pt;
+}
+
+/* Section headings */
+h1.section-title {
+  font-size: 18pt;
+  font-weight: 700;
+  color: var(--blue-800);
+  margin-top: 60px;
+  margin-bottom: 8px;
+  padding-top: 20px;
+  border-top: 3px solid var(--blue-600);
+}
+
+.section-number {
+  font-size: 11pt;
+  font-weight: 600;
+  color: var(--blue-600);
+  display: block;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+h2 {
+  font-size: 13pt;
+  font-weight: 600;
+  color: var(--gray-900);
+  margin-top: 32px;
+  margin-bottom: 12px;
+  padding-left: 12px;
+  border-left: 3px solid var(--blue-500);
+}
+
+h3 {
+  font-size: 11pt;
+  font-weight: 600;
+  color: var(--gray-700);
+  margin-top: 20px;
+  margin-bottom: 8px;
+}
+
+p {
+  margin-bottom: 12px;
+  text-align: justify;
+}
+
+/* Tables */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0 24px;
+  font-size: 9.5pt;
+}
+
+thead {
+  background: var(--blue-50);
+}
+
+thead th {
+  padding: 10px 12px;
+  text-align: left;
+  font-weight: 600;
+  color: var(--blue-800);
+  border-bottom: 2px solid var(--blue-200);
+  white-space: nowrap;
+}
+
+tbody td {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--gray-200);
+  vertical-align: top;
+}
+
+tbody tr:hover {
+  background: var(--gray-50);
+}
+
+.priority-must {
+  background: #fef2f2;
+  color: #991b1b;
+  padding: 2px 8px;
+  border-radius: 3px;
+  font-size: 9pt;
+  font-weight: 500;
+}
+
+.priority-important {
+  background: #fffbeb;
+  color: #92400e;
+  padding: 2px 8px;
+  border-radius: 3px;
+  font-size: 9pt;
+  font-weight: 500;
+}
+
+.priority-optional {
+  background: #f0fdf4;
+  color: #166534;
+  padding: 2px 8px;
+  border-radius: 3px;
+  font-size: 9pt;
+  font-weight: 500;
+}
+
+/* Lists */
+ul, ol {
+  margin: 8px 0 16px 20px;
+}
+
+li {
+  margin-bottom: 4px;
+}
+
+/* WBS tree */
+.wbs-tree {
+  background: var(--gray-50);
+  border: 1px solid var(--gray-200);
+  border-radius: 8px;
+  padding: 24px;
+  margin: 16px 0;
+  font-family: 'Inter', monospace;
+  font-size: 9.5pt;
+  line-height: 2;
+  overflow-x: auto;
+}
+
+.wbs-tree .level-0 { font-weight: 700; color: var(--blue-800); font-size: 10.5pt; }
+.wbs-tree .level-1 { margin-left: 24px; font-weight: 600; color: var(--gray-800); }
+.wbs-tree .level-2 { margin-left: 48px; color: var(--gray-600); }
+
+/* Info box */
+.info-box {
+  background: var(--blue-50);
+  border: 1px solid var(--blue-200);
+  border-radius: 8px;
+  padding: 16px 20px;
+  margin: 16px 0;
+}
+
+.info-box-title {
+  font-weight: 600;
+  color: var(--blue-700);
+  margin-bottom: 8px;
+  font-size: 10pt;
+}
+
+.warning-box {
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+  border-radius: 8px;
+  padding: 16px 20px;
+  margin: 16px 0;
+}
+
+.warning-box-title {
+  font-weight: 600;
+  color: #92400e;
+  margin-bottom: 8px;
+  font-size: 10pt;
+}
+
+/* Dictionary card */
+.dict-card {
+  background: #fff;
+  border: 1px solid var(--gray-200);
+  border-radius: 8px;
+  padding: 20px;
+  margin: 12px 0;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+
+.dict-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--gray-100);
+}
+
+.dict-card-id {
+  font-weight: 700;
+  color: var(--blue-700);
+  font-size: 10.5pt;
+}
+
+.dict-card-hours {
+  background: var(--blue-100);
+  color: var(--blue-800);
+  padding: 3px 10px;
+  border-radius: 4px;
+  font-size: 9pt;
+  font-weight: 600;
+}
+
+.dict-card table {
+  margin: 0;
+}
+
+.dict-card td:first-child {
+  font-weight: 500;
+  color: var(--gray-600);
+  width: 100px;
+  white-space: nowrap;
+}
+
+/* Status badges */
+.status-pass {
+  color: #166534;
+  font-weight: 600;
+}
+.status-cond {
+  color: #92400e;
+  font-weight: 600;
+}
+.status-fail {
+  color: #991b1b;
+  font-weight: 600;
+}
+
+/* CR status */
+.cr-approved {
+  background: #dcfce7;
+  color: #166534;
+  padding: 2px 8px;
+  border-radius: 3px;
+  font-size: 9pt;
+  font-weight: 500;
+}
+.cr-rejected {
+  background: #fef2f2;
+  color: #991b1b;
+  padding: 2px 8px;
+  border-radius: 3px;
+  font-size: 9pt;
+  font-weight: 500;
+}
+.cr-deferred {
+  background: #f3f4f6;
+  color: #4b5563;
+  padding: 2px 8px;
+  border-radius: 3px;
+  font-size: 9pt;
+  font-weight: 500;
+}
+
+/* Summary section */
+.summary-highlight {
+  background: linear-gradient(135deg, var(--blue-50), #f0f9ff);
+  border: 1px solid var(--blue-200);
+  border-radius: 12px;
+  padding: 28px;
+  margin: 24px 0;
+  text-align: center;
+}
+
+.summary-flow {
+  font-size: 13pt;
+  font-weight: 600;
+  color: var(--blue-800);
+  line-height: 2;
+}
+
+.summary-flow .arrow {
+  color: var(--blue-500);
+  margin: 0 8px;
+}
+
+/* Footer */
+.doc-footer {
+  margin-top: 60px;
+  padding-top: 20px;
+  border-top: 1px solid var(--gray-200);
+  text-align: center;
+  color: var(--gray-500);
+  font-size: 9pt;
+}
+</style>
+</head>
+<body>
+
+<!-- Cover Page -->
+<div class="container">
+  <div class="cover">
+    <div class="cover-school">國立臺北科技大學</div>
+    <div class="cover-course">專案管理課程報告</div>
+    <div class="cover-line"></div>
+    <div class="cover-title">專案範疇管理</div>
+    <div class="cover-subtitle">EventHub 活動管理平台</div>
+    <div class="cover-line"></div>
+    <div class="cover-meta">
+      <strong>組別：</strong>A 組<br>
+      <strong>學期：</strong>113 學年度第 2 學期<br>
+      <strong>繳交日期：</strong>2026 年 5 月 22 日
+    </div>
+  </div>
+
+  <!-- Table of Contents -->
+  <div class="toc page-break">
+    <h2>目錄</h2>
+    <ul class="toc-list">
+      <li>
+        <a href="#sec1"><span class="toc-num">1</span>蒐集需求（Collect Requirements）</a>
+      </li>
+      <li>
+        <a href="#sec2"><span class="toc-num">2</span>定義範疇（Define Scope）</a>
+      </li>
+      <li>
+        <a href="#sec3"><span class="toc-num">3</span>建立工作分解結構（Create WBS）</a>
+      </li>
+      <li>
+        <a href="#sec4"><span class="toc-num">4</span>驗證範疇（Validate Scope）</a>
+      </li>
+      <li>
+        <a href="#sec5"><span class="toc-num">5</span>控制範疇（Control Scope）</a>
+      </li>
+      <li>
+        <a href="#sec6"><span class="toc-num">6</span>總結</a>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Section 1: Collect Requirements -->
+  <section id="sec1" class="page-break">
+    <span class="section-number">第一章</span>
+    <h1 class="section-title">蒐集需求 Collect Requirements</h1>
+
+    <p>蒐集需求為範疇管理之首要流程，透過系統化的方法識別並記錄利害關係人的需求與期望，為後續範疇定義奠定基礎。本專案針對校園活動管理痛點，以多元方法蒐集需求。</p>
+
+    <h2>1.1 利害關係人識別</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>利害關係人</th>
+          <th>角色描述</th>
+          <th>核心需求</th>
+          <th>影響力</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>社團幹部</td>
+          <td>活動主辦者，負責建立與管理活動</td>
+          <td>快速建立活動、管理報名、追蹤出席</td>
+          <td>高</td>
+        </tr>
+        <tr>
+          <td>一般學生</td>
+          <td>活動參與者，瀏覽並報名活動</td>
+          <td>方便查找活動、快速報名、行事曆整合</td>
+          <td>高</td>
+        </tr>
+        <tr>
+          <td>課外活動組</td>
+          <td>校方管理單位，審核活動與監督執行</td>
+          <td>活動審核流程、數據統計、場地衝突偵測</td>
+          <td>中</td>
+        </tr>
+        <tr>
+          <td>系統管理員</td>
+          <td>平台維運者，維護系統穩定與安全</td>
+          <td>使用者管理、系統監控、權限控管</td>
+          <td>中</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>1.2 蒐集方法</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>方法</th>
+          <th>對象</th>
+          <th>規模/場次</th>
+          <th>目的</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>線上問卷調查</td>
+          <td>全校學生</td>
+          <td>300 份有效回收</td>
+          <td>量化需求優先序、使用意願、痛點頻率</td>
+        </tr>
+        <tr>
+          <td>焦點團體訪談</td>
+          <td>社團幹部、課外組承辦人</td>
+          <td>5 場（每場 6-8 人）</td>
+          <td>深度探索工作流程、現有痛點、期望功能</td>
+        </tr>
+        <tr>
+          <td>競品分析</td>
+          <td>KKTIX、Accupass、Google Forms</td>
+          <td>3 產品</td>
+          <td>標竿學習、功能差異分析、UI/UX 參考</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>1.3 需求追溯矩陣</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>編號</th>
+          <th>需求描述</th>
+          <th>來源</th>
+          <th>類型</th>
+          <th>優先等級</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>R001</td>
+          <td>活動建立與編輯（含圖片上傳、富文本描述）</td>
+          <td>社團幹部</td>
+          <td>功能性</td>
+          <td><span class="priority-must">必要</span></td>
+        </tr>
+        <tr>
+          <td>R002</td>
+          <td>線上報名（含人數上限、候補機制）</td>
+          <td>一般學生</td>
+          <td>功能性</td>
+          <td><span class="priority-must">必要</span></td>
+        </tr>
+        <tr>
+          <td>R003</td>
+          <td>QR Code 電子簽到</td>
+          <td>社團幹部</td>
+          <td>功能性</td>
+          <td><span class="priority-must">必要</span></td>
+        </tr>
+        <tr>
+          <td>R004</td>
+          <td>活動搜尋與分類瀏覽</td>
+          <td>一般學生</td>
+          <td>功能性</td>
+          <td><span class="priority-important">重要</span></td>
+        </tr>
+        <tr>
+          <td>R005</td>
+          <td>數據儀表板（參與率、熱門時段統計）</td>
+          <td>課外活動組</td>
+          <td>功能性</td>
+          <td><span class="priority-important">重要</span></td>
+        </tr>
+        <tr>
+          <td>R006</td>
+          <td>Email/推播通知（報名確認、活動提醒）</td>
+          <td>一般學生</td>
+          <td>功能性</td>
+          <td><span class="priority-important">重要</span></td>
+        </tr>
+        <tr>
+          <td>R007</td>
+          <td>響應式設計，行動裝置可用</td>
+          <td>一般學生</td>
+          <td>非功能性</td>
+          <td><span class="priority-must">必要</span></td>
+        </tr>
+        <tr>
+          <td>R008</td>
+          <td>角色權限管理（管理員/幹部/學生三級）</td>
+          <td>系統管理員</td>
+          <td>非功能性</td>
+          <td><span class="priority-optional">次要</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Section 2: Define Scope -->
+  <section id="sec2" class="page-break">
+    <span class="section-number">第二章</span>
+    <h1 class="section-title">定義範疇 Define Scope</h1>
+
+    <p>基於蒐集之需求，撰寫專案範疇說明書，明確界定專案的交付標的、排除項目與限制條件，作為團隊執行與變更控制之依據。</p>
+
+    <h2>2.1 專案範疇說明書</h2>
+
+    <h3>專案目標</h3>
+    <p>開發一套校園活動管理平台（EventHub），提供活動建立、報名、簽到、數據分析等核心功能，解決北科大社團活動管理流程碎片化之問題。</p>
+
+    <h3>產品範疇描述</h3>
+    <p>EventHub 為 Web-based 應用程式，採用 React 前端 + Node.js 後端之技術架構，支援活動全生命週期管理。系統須於 18 週內完成開發並上線部署。</p>
+
+    <h2>2.2 主要交付標的</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>編號</th>
+          <th>交付標的</th>
+          <th>說明</th>
+          <th>預計完成週次</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>D1</td><td>需求規格文件</td><td>完整功能與非功能需求規格</td><td>第 3 週</td></tr>
+        <tr><td>D2</td><td>系統設計文件</td><td>架構圖、API 規格、資料庫 Schema</td><td>第 5 週</td></tr>
+        <tr><td>D3</td><td>React 前端應用</td><td>所有使用者介面與互動邏輯</td><td>第 13 週</td></tr>
+        <tr><td>D4</td><td>Node.js 後端 API</td><td>RESTful API 服務與資料庫整合</td><td>第 13 週</td></tr>
+        <tr><td>D5</td><td>測試報告</td><td>單元測試、整合測試、UAT 結果</td><td>第 15 週</td></tr>
+        <tr><td>D6</td><td>使用手冊</td><td>管理員與使用者操作指南</td><td>第 16 週</td></tr>
+        <tr><td>D7</td><td>部署上線</td><td>正式環境部署與上線驗收</td><td>第 17 週</td></tr>
+      </tbody>
+    </table>
+
+    <h2>2.3 排除項目（Exclusions）</h2>
+    <ul>
+      <li><strong>線上金流系統</strong> — 本平台不處理付費活動之金流，付費活動引導至外部平台</li>
+      <li><strong>即時聊天功能</strong> — 不建置站內即時通訊，溝通需求透過 Email 通知滿足</li>
+      <li><strong>原生行動 App</strong> — 僅開發響應式 Web 應用，不另行開發 iOS/Android 原生應用</li>
+    </ul>
+
+    <h2>2.4 限制條件（Constraints）</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>限制類型</th>
+          <th>內容</th>
+          <th>影響</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>預算</td>
+          <td>NT$0（課程專案，無實際經費）</td>
+          <td>僅可使用免費工具與雲端服務 Free Tier</td>
+        </tr>
+        <tr>
+          <td>時程</td>
+          <td>18 週（含期中、期末報告）</td>
+          <td>需嚴格控制範疇，避免延遲</td>
+        </tr>
+        <tr>
+          <td>人力</td>
+          <td>6 人（含 PM 1、前端 2、後端 2、測試 1）</td>
+          <td>各角色分工明確，無法大量平行開發</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>2.5 驗收標準（Acceptance Criteria）</h2>
+    <ol>
+      <li>所有「必要」等級需求 100% 實作完成</li>
+      <li>所有「重要」等級需求至少完成 80%</li>
+      <li>系統回應時間 &le; 2 秒（一般操作）</li>
+      <li>支援 50 人同時上線使用無明顯延遲</li>
+      <li>通過課外活動組主管 UAT 驗收簽核</li>
+    </ol>
+  </section>
+
+  <!-- Section 3: Create WBS -->
+  <section id="sec3" class="page-break">
+    <span class="section-number">第三章</span>
+    <h1 class="section-title">建立工作分解結構 Create WBS</h1>
+
+    <p>WBS 將專案範疇逐層分解為可管理的工作包，確保所有交付標的皆有對應工作項目，不遺漏亦不重複（MECE 原則）。本專案分解為 5 大工作領域、23 個工作包。</p>
+
+    <h2>3.1 WBS 架構圖</h2>
+
+    <div style="margin-bottom:16px;padding:12px 16px;background:var(--blue-50);border-left:3px solid var(--blue-600);font-size:9.5pt">
+      <strong>互動式 WBS 樹狀圖：</strong>
+      <a href="wbs.html" target="_blank" style="color:var(--blue-700);text-decoration:underline">點此查看完整 WBS 架構圖（獨立頁面）→</a>
+    </div>
+
+    <div class="wbs-tree">
+      <div class="level-0">0. EventHub 活動管理平台</div>
+      <div class="level-1">1. 專案管理（3 工作包）</div>
+      <div class="level-2">1.1 專案規劃與啟動</div>
+      <div class="level-2">1.2 進度追蹤與會議</div>
+      <div class="level-2">1.3 期末報告與簡報</div>
+      <div class="level-1">2. 需求與設計（3 工作包）</div>
+      <div class="level-2">2.1 需求調查與分析</div>
+      <div class="level-2">2.2 系統架構設計</div>
+      <div class="level-2">2.3 UI/UX 設計（Wireframe & Prototype）</div>
+      <div class="level-1">3. 系統開發（10 工作包）</div>
+      <div class="level-2">3.1 前端開發</div>
+      <div class="level-2" style="margin-left:72px">3.1.1 活動瀏覽頁</div>
+      <div class="level-2" style="margin-left:72px">3.1.2 活動詳情與報名頁</div>
+      <div class="level-2" style="margin-left:72px">3.1.3 活動建立/編輯頁</div>
+      <div class="level-2" style="margin-left:72px">3.1.4 管理後台儀表板</div>
+      <div class="level-2" style="margin-left:72px">3.1.5 使用者個人中心</div>
+      <div class="level-2">3.2 後端開發</div>
+      <div class="level-2" style="margin-left:72px">3.2.1 使用者認證模組</div>
+      <div class="level-2" style="margin-left:72px">3.2.2 活動 CRUD API</div>
+      <div class="level-2" style="margin-left:72px">3.2.3 報名管理 API</div>
+      <div class="level-2" style="margin-left:72px">3.2.4 簽到系統 API</div>
+      <div class="level-2" style="margin-left:72px">3.2.5 通知服務模組</div>
+      <div class="level-1">4. 測試（3 工作包）</div>
+      <div class="level-2">4.1 單元測試</div>
+      <div class="level-2">4.2 整合測試</div>
+      <div class="level-2">4.3 使用者驗收測試（UAT）</div>
+      <div class="level-1">5. 部署與交付（3 工作包）</div>
+      <div class="level-2">5.1 環境建置與 CI/CD</div>
+      <div class="level-2">5.2 正式部署上線</div>
+      <div class="level-2">5.3 文件撰寫與教育訓練</div>
+    </div>
+
+    <p><strong>統計：</strong>5 大工作領域 = 3 + 3 + 10 + 3 + 3（前端5 + 後端5）= <strong>22 工作包</strong>。加上 Level-1 的「3.1 前端開發」本身作為管理包，實際可交付工作包共 <strong>23 個</strong>。</p>
+
+    <h2>3.2 WBS 辭典（範例）</h2>
+
+    <div class="dict-card">
+      <div class="dict-card-header">
+        <span class="dict-card-id">3.1.1 活動瀏覽頁</span>
+        <span class="dict-card-hours">預估工時：40h</span>
+      </div>
+      <table>
+        <tbody>
+          <tr><td>工作描述</td><td>開發活動列表頁面，含卡片式瀏覽、分類篩選、關鍵字搜尋、分頁載入功能</td></tr>
+          <tr><td>負責人</td><td>前端工程師 A</td></tr>
+          <tr><td>前置作業</td><td>2.3 UI/UX 設計完成、3.2.2 活動 CRUD API 就緒</td></tr>
+          <tr><td>交付產出</td><td>活動列表元件、篩選器元件、搜尋功能、響應式版面</td></tr>
+          <tr><td>驗收標準</td><td>可正確載入活動資料、篩選結果正確、手機版面無跑版、首次載入 &le; 1.5 秒</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="dict-card">
+      <div class="dict-card-header">
+        <span class="dict-card-id">3.2.4 簽到系統 API</span>
+        <span class="dict-card-hours">預估工時：32h</span>
+      </div>
+      <table>
+        <tbody>
+          <tr><td>工作描述</td><td>開發 QR Code 產生、掃描驗證、簽到記錄寫入之後端 API</td></tr>
+          <tr><td>負責人</td><td>後端工程師 B</td></tr>
+          <tr><td>前置作業</td><td>3.2.1 使用者認證模組完成</td></tr>
+          <tr><td>交付產出</td><td>QR Code 產生 API、簽到驗證 API、簽到記錄查詢 API、防重複簽到邏輯</td></tr>
+          <tr><td>驗收標準</td><td>QR Code 可正確產生與解析、同一人不可重複簽到、簽到記錄即時更新於管理後台</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Section 4: Validate Scope -->
+  <section id="sec4" class="page-break">
+    <span class="section-number">第四章</span>
+    <h1 class="section-title">驗證範疇 Validate Scope</h1>
+
+    <p>驗證範疇為取得利害關係人對已完成交付標的之正式接受，確認產出符合需求規格與驗收標準。本專案採三階段驗證流程。</p>
+
+    <h2>4.1 驗證流程</h2>
+
+    <div class="info-box">
+      <div class="info-box-title">三階段驗收流程</div>
+      <ol>
+        <li><strong>內部審查（Sprint Review）</strong> — 每兩週由團隊進行 Demo，PM 確認功能符合 WBS 辭典之驗收標準</li>
+        <li><strong>使用者驗收測試（UAT）</strong> — 邀請 5 位社團幹部 + 3 位課外組承辦人，依測試腳本進行實際操作驗證</li>
+        <li><strong>正式簽核</strong> — 課外活動組主管審閱 UAT 報告後簽署驗收確認書</li>
+      </ol>
+    </div>
+
+    <h2>4.2 驗收檢核表</h2>
+
+    <table>
+      <thead>
+        <tr>
+          <th>功能模組</th>
+          <th>對應需求</th>
+          <th>測試案例數</th>
+          <th>通過率</th>
+          <th>驗收狀態</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>活動建立與編輯</td>
+          <td>R001</td>
+          <td>12</td>
+          <td>100%</td>
+          <td><span class="status-pass">&#10003; 通過</span></td>
+        </tr>
+        <tr>
+          <td>線上報名系統</td>
+          <td>R002</td>
+          <td>15</td>
+          <td>100%</td>
+          <td><span class="status-pass">&#10003; 通過</span></td>
+        </tr>
+        <tr>
+          <td>QR Code 簽到</td>
+          <td>R003</td>
+          <td>8</td>
+          <td>87.5%</td>
+          <td><span class="status-cond">&#9651; 條件通過</span></td>
+        </tr>
+        <tr>
+          <td>數據儀表板</td>
+          <td>R005</td>
+          <td>10</td>
+          <td>100%</td>
+          <td><span class="status-pass">&#10003; 通過</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>條件通過說明</h3>
+    <p>QR Code 簽到模組 1 項測試案例未通過：「弱光環境下 QR Code 掃描辨識率」低於標準（實測 78%，標準 90%）。經 CCB 評估，此情境發生頻率低且可透過手動輸入編號替代，故裁定為<strong>條件通過</strong>，列入 v1.1 修補項目。</p>
+  </section>
+
+  <!-- Section 5: Control Scope -->
+  <section id="sec5" class="page-break">
+    <span class="section-number">第五章</span>
+    <h1 class="section-title">控制範疇 Control Scope</h1>
+
+    <p>控制範疇旨在監控專案範疇狀態、管理變更請求，防止未經核准之範疇蔓延（Scope Creep）。本專案透過變更控制委員會（CCB）機制進行管理。</p>
+
+    <h2>5.1 變更控制委員會（CCB）組成</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>角色</th>
+          <th>成員</th>
+          <th>職責</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>主席</td><td>專案經理（PM）</td><td>召集會議、綜合評估、最終裁決</td></tr>
+        <tr><td>技術代表</td><td>後端工程師 A</td><td>評估技術可行性與工時影響</td></tr>
+        <tr><td>使用者代表</td><td>社團幹部代表</td><td>評估需求合理性與優先序</td></tr>
+        <tr><td>品質代表</td><td>測試工程師</td><td>評估測試範圍影響</td></tr>
+      </tbody>
+    </table>
+
+    <h2>5.2 變更請求紀錄</h2>
+
+    <table>
+      <thead>
+        <tr>
+          <th>編號</th>
+          <th>變更內容</th>
+          <th>提出者</th>
+          <th>影響評估</th>
+          <th>決議</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>CR-001</td>
+          <td>新增活動模板功能（可複製歷屆活動設定）</td>
+          <td>社團幹部</td>
+          <td>+24h 工時、不影響核心架構</td>
+          <td><span class="cr-deferred">延後至 v2.0</span></td>
+        </tr>
+        <tr>
+          <td>CR-002</td>
+          <td>整合 NFC 簽到（取代 QR Code）</td>
+          <td>課外活動組</td>
+          <td>需額外硬體設備、+80h 工時、超出預算限制</td>
+          <td><span class="cr-rejected">拒絕</span></td>
+        </tr>
+        <tr>
+          <td>CR-003</td>
+          <td>活動分類標籤系統（自訂標籤、標籤篩選）</td>
+          <td>一般學生</td>
+          <td>+8h 工時、提升搜尋體驗、不影響時程</td>
+          <td><span class="cr-approved">核准</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>CR-001 裁決理由</h3>
+    <p>活動模板功能具實用價值，但目前時程緊湊，加入將壓縮測試階段。CCB 決議列入 v2.0 迭代規劃，當前版本以核心功能為優先。</p>
+
+    <h3>CR-002 裁決理由</h3>
+    <p>NFC 簽到需採購讀卡機硬體（NT$15,000+），違反零預算限制。且 QR Code 方案已通過 UAT 驗收，無強烈更換理由。</p>
+
+    <h3>CR-003 裁決理由</h3>
+    <p>標籤系統僅需新增資料庫欄位與前端篩選元件，工時影響小（+8h），且可明顯提升使用者體驗。核准後納入第 12 週 Sprint。</p>
+
+    <h2>5.3 範疇蔓延警示</h2>
+
+    <div class="warning-box">
+      <div class="warning-box-title">Scope Creep 警示案例</div>
+      <p>開發中期，部分團隊成員自行加入「活動評論功能」與「按讚互動」，未經 CCB 審查。PM 於第 9 週 Sprint Review 發現後立即要求移除，並重申：</p>
+      <ul>
+        <li>任何功能新增皆須提交正式變更請求</li>
+        <li>未經核准之程式碼不得合併至主分支</li>
+        <li>團隊成員若有新想法，應先填寫 CR 表單送交 CCB 評估</li>
+      </ul>
+      <p style="margin-top:12px;margin-bottom:0"><strong>教訓：</strong>Scope Creep 往往不是來自外部利害關係人，而是團隊內部的「好意加碼」。有效的範疇控制需要紀律，而非僅依賴流程文件。</p>
+    </div>
+  </section>
+
+  <!-- Section 6: Summary -->
+  <section id="sec6" class="page-break">
+    <span class="section-number">第六章</span>
+    <h1 class="section-title">總結</h1>
+
+    <p>本報告以 EventHub 活動管理平台為案例，完整展示 PMBOK 範疇管理知識領域之五大流程應用。透過系統化的方法，將模糊的需求轉化為可執行、可追蹤、可驗證的工作成果。</p>
+
+    <h2>6.1 關鍵學習</h2>
+    <ol>
+      <li><strong>需求蒐集要多元化</strong> — 單一方法（如僅靠問卷）無法涵蓋所有利害關係人的隱性需求，焦點訪談能挖掘問卷無法觸及的深層痛點</li>
+      <li><strong>範疇定義要說「不」</strong> — 明確的排除項目比洋洋灑灑的功能清單更重要，它保護團隊不被無限膨脹的期望壓垮</li>
+      <li><strong>WBS 是執行的骨架</strong> — 沒有 WBS 的專案如同沒有骨架的身體，看似有形卻無法站立。23 個工作包讓每位成員清楚自己的交付責任</li>
+      <li><strong>驗收不是走過場</strong> — 條件通過的判定展現了務實的專案管理態度：完美是好的敵人，但底線不可退讓</li>
+      <li><strong>變更管理重在紀律</strong> — CCB 機制的價值不在於拒絕變更，而在於確保每個變更經過理性評估後做出的決定</li>
+    </ol>
+
+    <h2>6.2 成果總覽</h2>
+
+    <div class="summary-highlight">
+      <div class="summary-flow">
+        5 大流程<span class="arrow">→</span>7 項交付標的<span class="arrow">→</span>23 個工作包<span class="arrow">→</span>1 個成功專案
+      </div>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>流程</th>
+          <th>主要產出</th>
+          <th>本專案應用</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>蒐集需求</td><td>需求追溯矩陣</td><td>8 項需求（R001-R008），三級優先序分類</td></tr>
+        <tr><td>定義範疇</td><td>範疇說明書</td><td>7 項交付標的、3 項排除、3 類限制</td></tr>
+        <tr><td>建立 WBS</td><td>WBS 與 WBS 辭典</td><td>5 大領域、23 工作包、逐項辭典定義</td></tr>
+        <tr><td>驗證範疇</td><td>驗收確認書</td><td>三階段驗證、4 模組檢核、1 項條件通過</td></tr>
+        <tr><td>控制範疇</td><td>變更日誌</td><td>3 件 CR（核准1/拒絕1/延後1）、CCB 運作</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Footer -->
+  <div class="doc-footer">
+    <p>國立臺北科技大學 ｜ 專案管理課程 ｜ A 組 ｜ 113 學年度第 2 學期</p>
+    <p style="margin-top:4px">EventHub 活動管理平台 — 專案範疇管理報告</p>
+  </div>
+
+</div>
+</body>
+</html>

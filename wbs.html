@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WBS 工作分解結構 · EventHub</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+TC:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Inter','Noto Sans TC',sans-serif;color:#1a1a1a;background:#f0f1f3;
+    padding:2rem 1rem;display:flex;flex-direction:column;align-items:center;min-height:100vh;overflow-x:hidden}
+  h1{font-weight:700;font-size:2rem;letter-spacing:-.03em;margin-bottom:.3rem}
+  .sub{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:#888;letter-spacing:.12em;text-transform:uppercase;margin-bottom:1.5rem}
+
+  .legend{display:flex;gap:1.2rem;margin-bottom:1.8rem;flex-wrap:wrap;justify-content:center}
+  .legend-item{display:flex;align-items:center;gap:.35rem;font-size:.7rem;color:#666}
+  .legend-dot{width:12px;height:12px;flex-shrink:0}
+  .legend-dot.l0{background:#e0c830}.legend-dot.l1{background:#4a8c6f}
+  .legend-dot.l2{background:#5b8db8}.legend-dot.accent{background:#002FA7}
+  .legend-dot.l3{background:#8ba7c7}
+
+  /* scroll wrapper */
+  .scroll-wrap{width:100%;max-width:100vw;overflow-x:auto;overflow-y:visible;padding:0 0 2rem;-webkit-overflow-scrolling:touch}
+  .scale-wrap{transform-origin:top center;transition:transform .3s ease}
+
+  /* Tree via nested ul/li + CSS connectors */
+  .tree,.tree ul{list-style:none;padding:0;margin:0}
+  .tree{display:inline-flex;justify-content:center;white-space:nowrap}
+
+  .tree ul{display:flex;justify-content:center;padding-top:22px;position:relative}
+  .tree ul::before{content:'';position:absolute;top:0;left:50%;border-left:1.5px solid #aaa;height:22px}
+
+  .tree li{display:flex;flex-direction:column;align-items:center;position:relative;padding:22px 4px 0}
+  .tree li::before,.tree li::after{
+    content:'';position:absolute;top:0;width:50%;border-top:1.5px solid #aaa;height:22px
+  }
+  .tree li::before{right:50%}
+  .tree li::after{left:50%;border-left:1.5px solid #aaa}
+  .tree li:first-child::before{display:none}
+  .tree li:last-child::after{border-top:none}
+  .tree li:only-child::before,.tree li:only-child::after{display:none}
+  .tree li:only-child{padding-top:22px}
+  .tree li:only-child::after{display:block;border-left:1.5px solid #aaa;border-top:none;width:0;height:22px;left:50%}
+  .tree > li{padding-top:0}
+  .tree > li::before,.tree > li::after{display:none}
+
+  /* node */
+  .n{
+    padding:7px 12px;min-width:72px;text-align:center;position:relative;z-index:1;
+    box-shadow:0 1px 3px rgba(0,0,0,.1);white-space:nowrap
+  }
+  .n .nm{font-weight:500;font-size:.72rem;line-height:1.3}
+  .n .cd{font-family:'JetBrains Mono',monospace;font-size:.58rem;opacity:.6;letter-spacing:.03em;margin-top:1px}
+
+  .n.l0{background:#e0c830;color:#1a1a1a;min-width:140px;padding:10px 18px;border:2px solid #c8b020}
+  .n.l0 .nm{font-weight:600;font-size:.85rem}
+  .n.l1{background:#4a8c6f;color:#fff;padding:8px 14px}
+  .n.l2{background:#5b8db8;color:#fff}
+  .n.l2.accent{background:#002FA7}
+  .n.l3{background:#8ba7c7;color:#fff;min-width:64px;padding:5px 8px}
+  .n.l3 .nm{font-size:.65rem}
+  .n.l3 .cd{font-size:.52rem}
+  .n.l3.dk{background:#7090ad}
+
+  .hint{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:#aaa;letter-spacing:.08em;margin-top:.5rem;text-align:center;display:none}
+
+  @media print{body{background:#fff;padding:.5cm;overflow:visible}.scroll-wrap{overflow:visible}.scale-wrap{transform:none!important}}
+</style>
+</head>
+<body>
+
+<h1>WBS 範例</h1>
+<div class="sub">EventHub 活動管理平台 · Work Breakdown Structure</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot l0"></div>0 級 · 專案</div>
+  <div class="legend-item"><div class="legend-dot l1"></div>1 級 · 工作區</div>
+  <div class="legend-item"><div class="legend-dot l2"></div>2 級 · 子系統</div>
+  <div class="legend-item"><div class="legend-dot accent"></div>核心開發</div>
+  <div class="legend-item"><div class="legend-dot l3"></div>3 級 · 工作包</div>
+</div>
+
+<div class="scroll-wrap" id="wrap">
+<div class="scale-wrap" id="scale">
+<ul class="tree" id="tree">
+  <li>
+    <div class="n l0"><div class="nm">EventHub 活動管理平台</div><div class="cd">1000</div></div>
+    <ul>
+      <li>
+        <div class="n l1"><div class="nm">專案管理</div><div class="cd">1100</div></div>
+        <ul>
+          <li><div class="n l2"><div class="nm">專案計畫</div><div class="cd">1110</div></div></li>
+          <li><div class="n l2"><div class="nm">進度追蹤</div><div class="cd">1120</div></div></li>
+          <li><div class="n l2"><div class="nm">風險管理</div><div class="cd">1130</div></div></li>
+        </ul>
+      </li>
+      <li>
+        <div class="n l1"><div class="nm">需求與設計</div><div class="cd">1200</div></div>
+        <ul>
+          <li><div class="n l2"><div class="nm">需求分析</div><div class="cd">1210</div></div></li>
+          <li><div class="n l2"><div class="nm">UI/UX 設計</div><div class="cd">1220</div></div></li>
+          <li><div class="n l2"><div class="nm">架構設計</div><div class="cd">1230</div></div></li>
+        </ul>
+      </li>
+      <li>
+        <div class="n l1"><div class="nm">開發</div><div class="cd">1300</div></div>
+        <ul>
+          <li>
+            <div class="n l2 accent"><div class="nm">前端開發</div><div class="cd">1310</div></div>
+            <ul>
+              <li><div class="n l3"><div class="nm">活動瀏覽頁</div><div class="cd">1311</div></div></li>
+              <li><div class="n l3"><div class="nm">報名流程</div><div class="cd">1312</div></div></li>
+              <li><div class="n l3"><div class="nm">簽到介面</div><div class="cd">1313</div></div></li>
+              <li><div class="n l3"><div class="nm">管理後台</div><div class="cd">1314</div></div></li>
+            </ul>
+          </li>
+          <li>
+            <div class="n l2 accent"><div class="nm">後端開發</div><div class="cd">1320</div></div>
+            <ul>
+              <li><div class="n l3 dk"><div class="nm">認證</div><div class="cd">1321</div></div></li>
+              <li><div class="n l3 dk"><div class="nm">活動 API</div><div class="cd">1322</div></div></li>
+              <li><div class="n l3 dk"><div class="nm">報名 API</div><div class="cd">1323</div></div></li>
+              <li><div class="n l3 dk"><div class="nm">簽到 API</div><div class="cd">1324</div></div></li>
+              <li><div class="n l3 dk"><div class="nm">問卷 API</div><div class="cd">1325</div></div></li>
+            </ul>
+          </li>
+          <li><div class="n l2"><div class="nm">資料庫建置</div><div class="cd">1330</div></div></li>
+        </ul>
+      </li>
+      <li>
+        <div class="n l1"><div class="nm">測試</div><div class="cd">1400</div></div>
+        <ul>
+          <li><div class="n l2"><div class="nm">單元測試</div><div class="cd">1410</div></div></li>
+          <li><div class="n l2"><div class="nm">整合測試</div><div class="cd">1420</div></div></li>
+          <li><div class="n l2"><div class="nm">UAT 驗收</div><div class="cd">1430</div></div></li>
+        </ul>
+      </li>
+      <li>
+        <div class="n l1"><div class="nm">部署與交付</div><div class="cd">1500</div></div>
+        <ul>
+          <li><div class="n l2"><div class="nm">環境建置</div><div class="cd">1510</div></div></li>
+          <li><div class="n l2"><div class="nm">系統部署</div><div class="cd">1520</div></div></li>
+          <li><div class="n l2"><div class="nm">手冊與訓練</div><div class="cd">1530</div></div></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+</div>
+</div>
+<div class="hint" id="hint">← 可左右捲動 →</div>
+
+<script>
+function fit(){
+  const wrap = document.getElementById('wrap');
+  const scale = document.getElementById('scale');
+  const tree = document.getElementById('tree');
+  const hint = document.getElementById('hint');
+  scale.style.transform = 'none';
+  const treeW = tree.scrollWidth;
+  const availW = wrap.clientWidth;
+  if(treeW > availW){
+    const ratio = availW / treeW;
+    if(ratio >= 0.55){
+      scale.style.transform = `scale(${ratio})`;
+      scale.style.width = treeW + 'px';
+      scale.style.height = (tree.scrollHeight * ratio) + 'px';
+      hint.style.display = 'none';
+    } else {
+      scale.style.transform = 'scale(0.55)';
+      scale.style.width = treeW + 'px';
+      scale.style.height = (tree.scrollHeight * 0.55) + 'px';
+      hint.style.display = 'block';
+    }
+  } else {
+    scale.style.width = '';
+    scale.style.height = '';
+    hint.style.display = 'none';
+  }
+}
+window.addEventListener('load', () => setTimeout(fit, 50));
+window.addEventListener('resize', fit);
+</script>
+
+</body>
+</html>

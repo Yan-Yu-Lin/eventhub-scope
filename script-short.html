@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>簡易講稿 · 專案範疇管理 EventHub</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Noto+Sans+TC:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{--a:#002FA7;--ink:#0a0a0a;--bg:#fafaf8;--g:#f0f0ee;--t2:#525252;--t3:#737373}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Inter','Noto Sans TC',sans-serif;color:var(--ink);background:var(--bg);line-height:1.7;padding:2.5rem 2rem;max-width:640px;margin:0 auto}
+  h1{font-weight:300;font-size:1.8rem;letter-spacing:-.02em}
+  .sub{font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--t3);letter-spacing:.1em;text-transform:uppercase;margin:.3rem 0 2.5rem}
+  .p{display:grid;grid-template-columns:4.5rem 1fr;gap:.8rem;margin-bottom:1.4rem;align-items:baseline}
+  .n{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--a);font-weight:600;letter-spacing:.06em;padding-top:.15rem}
+  .n.ch{color:var(--t3)}
+  .t{font-size:.92rem;font-weight:300;line-height:1.65}
+  .t b{font-weight:500}
+  .sep{grid-column:1/-1;height:1px;background:var(--g);margin:.6rem 0}
+  .foot{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--t3);letter-spacing:.08em;margin-top:2rem;text-align:right}
+  @media print{body{padding:1.5cm;font-size:13px}}
+</style>
+</head>
+<body>
+
+<h1>簡易講稿</h1>
+<div class="sub">專案範疇管理 · EventHub · A 組 · ~8 min</div>
+
+<div class="p"><div class="n">P01</div><div class="t">大家好，A 組，今天講<b>專案範疇管理</b>，用 EventHub 活動管理平台當例子。</div></div>
+
+<div class="p"><div class="n">P02</div><div class="t">現在社團辦活動靠 Google 表單 + LINE，很散。EventHub 要做<b>一站式</b>：建活動、報名、簽到、問卷。18 週、6 人、零預算。</div></div>
+
+<div class="sep"></div>
+
+<div class="p"><div class="n ch">P03</div><div class="t"><b>流程一：蒐集需求</b>——搞清楚誰需要什麼。</div></div>
+
+<div class="p"><div class="n">P04</div><div class="t">四類人：<b>社團幹部</b>建活動、<b>學生</b>報名、<b>課外組</b>審核看數據、<b>管理員</b>維運。問卷 300 份 + 訪談 5 場 + 競品分析。</div></div>
+
+<div class="p"><div class="n">P05</div><div class="t">整理出 8 項需求，分<b>必要</b>（活動建立、報名、簽到、審核）、<b>重要</b>（推播、問卷、儀表板）、<b>次要</b>（多語系）。</div></div>
+
+<div class="sep"></div>
+
+<div class="p"><div class="n ch">P06</div><div class="t"><b>流程二：定義範疇</b>——決定做什麼、不做什麼。</div></div>
+
+<div class="p"><div class="n">P07</div><div class="t">做：7 項交付成果（文件、前後端、測試、手冊、部署）。<b>不做</b>：金流、聊天、原生 App。排除項比包含項更重要——防範疇蔓延的第一道防線。</div></div>
+
+<div class="sep"></div>
+
+<div class="p"><div class="n ch">P08</div><div class="t"><b>流程三：建立 WBS</b>——把大專案拆成可管理的小塊。</div></div>
+
+<div class="p"><div class="n">P09</div><div class="t">拆成 5 大工作區，樹狀往下展開。開發最重（10 包），其餘各 3 包。</div></div>
+
+<div class="p"><div class="n">P10</div><div class="t">全部 <b>23 個工作包</b>攤開。重點看開發區：前端 4 包、後端 5 包、資料庫 1 包，共 320 小時。WBS 的精神：拆到一個人能負責、能估時間。</div></div>
+
+<div class="sep"></div>
+
+<div class="p"><div class="n ch">P11</div><div class="t"><b>流程四：驗證範疇</b>——做完了，確認做對了沒。</div></div>
+
+<div class="p"><div class="n">P12</div><div class="t">三步：審查會議 → 逐項確認 → 簽收或變更。四個功能驗收：3 個通過、簽到<b>條件通過</b>（效能待優化）。</div></div>
+
+<div class="sep"></div>
+
+<div class="p"><div class="n ch">P13</div><div class="t"><b>流程五：控制範疇</b>——有人想加東西怎麼辦。</div></div>
+
+<div class="p"><div class="n">P14</div><div class="t">三個案例。活動模板→<b>延後</b>v2.0。NFC 簽到→<b>拒絕</b>超預算。分類標籤→<b>核准</b>只要 8 小時。三種處理：延後、拒絕、核准。</div></div>
+
+<div class="sep"></div>
+
+<div class="p"><div class="n">P15</div><div class="t"><b>5</b> 流程 → <b>7</b> 交付成果 → <b>23</b> 工作包 → <b>1</b> 成功專案。</div></div>
+
+<div class="p"><div class="n">P16</div><div class="t">四個心得：需求要廣、範疇要精、WBS 是核心、<b>範疇蔓延是頭號殺手</b>。謝謝，Q&A。</div></div>
+
+<div class="foot">總長 ~8 分鐘 · A 組 · NTUT · 2026.05.22</div>
+
+</body>
+</html>
